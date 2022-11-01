@@ -117,10 +117,6 @@ function renderCurrentWeather(city, weather, timezone) {
 
     todayContainer.innerHTML = '';
     todayContainer.append(card);
-
-
-
-
 }
 
 
@@ -128,7 +124,7 @@ function renderCurrentWeather(city, weather, timezone) {
 
 
 function renderItems(city, data) {
-  // renderCurrentWeather(city, data.current, data.timezone);
+  renderCurrentWeather(city, data.current, data.timezone);
   renderForecast(data.daily, data.timezone);
 }
 
@@ -141,28 +137,22 @@ function fetchWeather(location) {
 
 
  	fetch(apiUrl)
- 		.then(
-
- 			function (res) {
+ 		.then(function (res) {
 	      		return res.json();
-	    	}
+	    	})
 
-
- 			)
-	    .then(
-	    	function (data) {
-
-	    	console.log("DATA", data)
+            .then(function (data) {
+            console.log("DATA", data)
       		renderItems(city, data);
+        })
 
-
-    	}
-    	)
     	.catch(function (err) {
       		console.error(err);
     	});
 
 }
+
+
 
 // Function to display 5 day forecast.
 function renderForecast(dailyForecast, timezone) {
