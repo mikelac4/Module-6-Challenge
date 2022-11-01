@@ -152,6 +152,50 @@ function fetchWeather(location) {
 
 }
 
+function fetchCoords(search) {
+    var apiUrl = `${weatherApiRootUrl}/geo/1.0/direct?q=${search}&limit=5&appid=${weatherApiKey}`;
+
+    fetch(apiUrl)
+        .then(function (res) {
+            return res.json();
+        })
+        .then(function (data) {
+            if (!data[0]) {
+                alert('Location not found');
+            } else {
+                appendToHistory(search);
+                fetchWeather(data[0]);
+            }
+        });
+}
+
+function handleSearchFormSubmit(e) {
+    // Dont continue if there is nothing in the search form
+    if (!searchInput.value) {
+        return;
+    }
+
+    e.preventDefault();
+    var search = searchInput.value.trim();
+    fetchCoords(search);
+    searchInput.value = '';
+}
+
+function handleSearchHistoryClick(e) {
+    // Dont search if current elements is not a search history button
+    if (!e.target.matches('.btn-history')) {
+        return;
+    }
+
+    var btn = e.target;
+    var search = btn.getAttribute('data-search');
+    fetchCoords(search);
+}
+
+initSearchHistory();
+searchForm.addEventListener('submit', handleSearchFormSubmit);
+searchHistoryContainer.addEventListener('click', handleSearchHistoryClick);
+
 
 
 // Function to display 5 day forecast.
